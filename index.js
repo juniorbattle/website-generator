@@ -483,11 +483,11 @@ async function handleFormSubmission(request, env) {
         </html>`;
 
 
-    const groqResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const appResponse = await fetch('https://api./v1/chat/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${env.GROQ_API_KEY}`
+        'Authorization': `Bearer ${env.API_KEY}`
       },
       body: JSON.stringify({
         model: "deepseek-r1-distill-llama-70b",
@@ -522,12 +522,12 @@ async function handleFormSubmission(request, env) {
        */
     });
 
-    if (!groqResponse.ok) {
-      const errorData = await groqResponse.text();
+    if (!appResponse.ok) {
+      const errorData = await appResponse.text();
       throw new Error(`Erreur Groq: ${errorData}`);
     }
 
-    const responseData = await groqResponse.json();
+    const responseData = await appResponse.json();
     const generatedHtml = responseData.choices[0].message.content
       .replace(/```html/g, '')
       .replace(/```/g, '')
@@ -547,4 +547,5 @@ async function handleFormSubmission(request, env) {
       headers: { 'Content-Type': 'text/plain' }
     });
   }
+
 }
